@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ItemSort } from '../../model/item-sort';
@@ -13,7 +13,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
-  addFormGroup: FormGroup = this.createFormGroup();
+  addFormGroup: UntypedFormGroup = this.createFormGroup();
   todoItems$: Observable<TodoItem[]> = this.service.todoItems$;
   hasTodoItems$: Observable<boolean> = this.todoItems$.pipe(
     map((items) => items.length > 0)
@@ -25,7 +25,7 @@ export class ListComponent implements OnInit {
     { key: 'createdDateTime', label: 'Created Date & Time' },
   ];
 
-  constructor(private fb: FormBuilder, private service: TodoItemService) {}
+  constructor(private fb: UntypedFormBuilder, private service: TodoItemService) {}
 
   ngOnInit() {
     this.service.loadItems();
@@ -57,7 +57,7 @@ export class ListComponent implements OnInit {
     this.service.setSortField(value);
   }
 
-  private createFormGroup(): FormGroup {
+  private createFormGroup(): UntypedFormGroup {
     return this.fb.group({
       name: this.fb.control('', Validators.required),
     });
