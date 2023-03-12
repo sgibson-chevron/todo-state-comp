@@ -1,11 +1,16 @@
-import { isNullOrUndefined } from 'util';
+function isNullOrUndefined(value: any): boolean {
+  return value === null || value === undefined;
+}
 
 export interface DateTimeSeconds {
   seconds: number;
   nanoSeconds: number;
 }
 
-export function createDateTimeSeconds(seconds: number = 0, nanoSeconds: number = 0): DateTimeSeconds {
+export function createDateTimeSeconds(
+  seconds: number = 0,
+  nanoSeconds: number = 0
+): DateTimeSeconds {
   return {
     seconds,
     nanoSeconds,
@@ -17,7 +22,7 @@ export function convertDateToSeconds(dateTime: Date): DateTimeSeconds {
     return null;
   } else {
     const timeInMS = dateTime.getTime();
-    return createDateTimeSeconds(timeInMS / 1000, timeInMS % 1000 * 1000);
+    return createDateTimeSeconds(timeInMS / 1000, (timeInMS % 1000) * 1000);
   }
 }
 

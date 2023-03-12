@@ -1,12 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import {
+  convertSecondsToDate,
+  DateTimeSeconds,
+} from '../model/date-time-seconds';
 
 @Pipe({
-  name: 'secondsToDate'
+  name: 'secondsToDate',
 })
 export class SecondsToDatePipe implements PipeTransform {
-
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(dateTimeSeconds: DateTimeSeconds): Date {
+    return convertSecondsToDate(dateTimeSeconds);
   }
-
 }

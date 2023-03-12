@@ -1,6 +1,10 @@
 <mat-card>
   <mat-card-title fxLayout="row">
-    <mat-checkbox (change)="onCheckboxClicked()" [checked]="item.completedDateTime">{{ item.name }}</mat-checkbox>
+    <mat-checkbox
+      (change)="onCheckboxClicked()"
+      [checked]="!!item.completedDateTime"
+      >{{ item.name }}</mat-checkbox
+    >
   </mat-card-title>
   <div fxFlex></div>
   <a mat-button [routerLink]="[item.id]">
