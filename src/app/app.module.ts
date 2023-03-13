@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { NgModule, isDevMode, ModuleWithProviders, Type } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -16,6 +16,11 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './statemanagement';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+const ngrxDevTools:
+  | any[]
+  | ModuleWithProviders<StoreDevtoolsModule>
+  | Type<any> = isDevMode() ? StoreDevtoolsModule.instrument() : [];
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,11 +33,22 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     MaterialModule,
     ReactiveFormsModule,
     BrowserModule,
+    // EffectsModule.forRoot([AppEffects]),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([AppEffects]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: !isDevMode(), // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+    }),
     RouterModule,
     AppRoutingModule,
-    EffectsModule.forRoot([AppEffects]),
-    StoreModule.forRoot(reducers, { metaReducers }),
-    isDevMode() ? StoreDevtoolsModule.instrument() : [],
+    [],
+
+    // ngrxDevTools,
+    // isDevMode() ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [],
   bootstrap: [AppComponent],
