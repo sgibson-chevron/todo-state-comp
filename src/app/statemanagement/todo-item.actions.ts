@@ -1,10 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-
-import { TodoItem } from './todo-item.model';
+import { TodoItem } from '../model/todo-item';
 
 export const loadTodoItems = createAction(
-  '[TodoItem/API] Load TodoItems', 
+  '[TodoItem/API] Load TodoItems',
   props<{ todoItems: TodoItem[] }>()
 );
 
@@ -48,6 +47,4 @@ export const deleteTodoItems = createAction(
   props<{ ids: string[] }>()
 );
 
-export const clearTodoItems = createAction(
-  '[TodoItem/API] Clear TodoItems'
-);
+export const clearTodoItems = createAction('[TodoItem/API] Clear TodoItems');
