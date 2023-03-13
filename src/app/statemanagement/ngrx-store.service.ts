@@ -4,7 +4,12 @@ import { TodoItem } from '../model/todo-item';
 import { ItemSort } from '../model/item-sort';
 import { ItemFilter } from '../model/item-filter.enum';
 import { Store } from '@ngrx/store';
-import { selectFiltersFeature, selectTodoFeature } from './index';
+import {
+  selectFilters,
+  selectFiltersFeature,
+  selectTodoFeature,
+  selectTodos,
+} from './index';
 import { map } from 'rxjs/operators';
 import * as fromTodoItem from './todo-item.reducer';
 import * as filterActions from './filters.actions';
@@ -17,12 +22,8 @@ import { convertDateToSeconds } from '../model/date-time-seconds';
 export class NgrxStoreService implements TodoItemStorage {
   constructor(private store: Store) {}
 
-  allItems$: Observable<TodoItem[]> = this.store
-    .select(selectTodoFeature)
-    .pipe(map((feature) => feature.todos));
-  filter$: Observable<ItemFilter> = this.store
-    .select(selectFiltersFeature)
-    .pipe(map((feature) => feature.filter));
+  allItems$: Observable<TodoItem[]> = this.store.select(selectTodos);
+  filter$: Observable<ItemFilter> = this.store.select(selectFilters);
   sort$: Observable<ItemSort>;
 
   addItem(item: Partial<TodoItem>): void {}
