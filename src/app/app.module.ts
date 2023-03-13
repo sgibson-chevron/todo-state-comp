@@ -18,11 +18,7 @@ import { reducers, metaReducers } from './statemanagement';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TODO_ITEM_STORAGE } from './service/todo-item-storage';
 import { NgrxStoreService } from './statemanagement/ngrx-store.service';
-
-const ngrxDevTools:
-  | any[]
-  | ModuleWithProviders<StoreDevtoolsModule>
-  | Type<any> = isDevMode() ? StoreDevtoolsModule.instrument() : [];
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -38,6 +34,7 @@ const ngrxDevTools:
     ReactiveFormsModule,
     BrowserModule,
     StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -45,10 +42,10 @@ const ngrxDevTools:
       trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
-    EffectsModule.forRoot([AppEffects]),
     RouterModule,
     AppRoutingModule,
     [],
+    FlexModule,
   ],
   providers: [{ provide: TODO_ITEM_STORAGE, useClass: NgrxStoreService }],
   bootstrap: [AppComponent],

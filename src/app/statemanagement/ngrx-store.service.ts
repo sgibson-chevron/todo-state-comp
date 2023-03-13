@@ -1,6 +1,6 @@
 import { TodoItemStorage } from '../service/todo-item-storage';
-import { Observable } from 'rxjs';
-import { TodoItem } from '../model/todo-item';
+import { Observable, take } from 'rxjs';
+import { createTodoItem, TodoItem } from '../model/todo-item';
 import { ItemSort } from '../model/item-sort';
 import { ItemFilter } from '../model/item-filter.enum';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import {
   selectFilters,
   selectFiltersFeature,
   selectTodoFeature,
+  selectTodoIds,
   selectTodos,
 } from './index';
 import { map } from 'rxjs/operators';
@@ -17,6 +18,7 @@ import * as todoActions from './todo-item.actions';
 import { Injectable } from '@angular/core';
 import { MOCK_TODO_ITEMS } from '../data/mock-data';
 import { convertDateToSeconds } from '../model/date-time-seconds';
+import { randomId } from '../model/todo-item-functions';
 
 @Injectable()
 export class NgrxStoreService implements TodoItemStorage {
@@ -26,7 +28,25 @@ export class NgrxStoreService implements TodoItemStorage {
   filter$: Observable<ItemFilter> = this.store.select(selectFilters);
   sort$: Observable<ItemSort>;
 
-  addItem(item: Partial<TodoItem>): void {}
+  getAllItems$(): Observable<TodoItem[]> {
+    return this.store.select(selectTodos);
+  }
+
+  addItem(item: Partial<TodoItem>): void {
+    this.store
+      .select(selectTodoIds)
+      .pipe(take(1))
+      .subscribe((ids) => {
+        this.store.dispatch(
+          todoActions.addTodoItem({
+            todoItem: {
+              ...createTodoItem(randomId()),
+              name: item.name,
+            },
+          })
+        );
+      });
+  }
 
   getItem(id: string): Observable<TodoItem> {
     return this.store

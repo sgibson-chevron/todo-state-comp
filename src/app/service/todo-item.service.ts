@@ -7,14 +7,13 @@ import { TodoItem } from '../model/todo-item';
 import { TodoItemStorage, TODO_ITEM_STORAGE } from './todo-item-storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoItemService {
-
   todoItems$: Observable<TodoItem[]> = this.storage.allItems$;
   sort$: Observable<ItemSort> = this.storage.sort$;
-  filter$: Observable<string> = this.storage.filter$.pipe(map(
-    filter => {
+  filter$: Observable<string> = this.storage.filter$.pipe(
+    map((filter) => {
       switch (filter) {
         case ItemFilter.COMPLETE:
           return 'complete';
@@ -24,12 +23,14 @@ export class TodoItemService {
         default:
           return 'all';
       }
-    }
-  ));
+    })
+  );
 
-  constructor(
-    @Inject(TODO_ITEM_STORAGE) private storage: TodoItemStorage
-  ) { }
+  constructor(@Inject(TODO_ITEM_STORAGE) private storage: TodoItemStorage) {}
+
+  getAllItems$(): Observable<TodoItem[]> {
+    return this.storage.getAllItems$();
+  }
 
   loadItems(): void {
     return this.storage.loadItems();

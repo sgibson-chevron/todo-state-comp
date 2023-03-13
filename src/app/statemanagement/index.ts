@@ -24,9 +24,12 @@ export const selectTodoFeature = createFeatureSelector<fromTodoItem.State>(
   fromTodoItem.todoItemsFeatureKey
 );
 
-export const selectTodos = createSelector(
-  selectTodoFeature,
-  (state) => state.todos
+export const selectTodos = createSelector(selectTodoFeature, (state) =>
+  fromTodoItem.selectAll(state)
+);
+
+export const selectTodoIds = createSelector(selectTodoFeature, (state) =>
+  fromTodoItem.selectIds(state)
 );
 
 export const selectFiltersFeature = createFeatureSelector<fromFilters.State>(
