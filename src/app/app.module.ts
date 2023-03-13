@@ -1,4 +1,4 @@
-import { NgModule, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexModule } from '@angular/flex-layout';
+import { TodoItemService } from './service/todo-item.service';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './statemanagement/app.effects';
 import { StoreModule } from '@ngrx/store';
@@ -46,7 +47,13 @@ import { NgrxStoreService } from './statemanagement/ngrx-store.service';
     AppRoutingModule,
     FlexModule,
   ],
-  providers: [{ provide: TODO_ITEM_STORAGE, useClass: NgrxStoreService }],
+  providers: [{ provide: TODO_ITEM_STORAGE, useClass: NgrxStoreService }, {
+    provide: APP_INITIALIZER,
+    useFactory: (todoService: TodoItemService) => {
+      todoService.loadItems();
+    },
+    deps: [TodoItemService],
+  },],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
