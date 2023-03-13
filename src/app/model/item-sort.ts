@@ -1,9 +1,14 @@
+import { TodoItem } from './todo-item';
+
 export interface ItemSort {
-  field: string;
+  field: keyof TodoItem;
   ascending: boolean;
 }
 
-export function updateItemSort(itemSort: ItemSort, field: string): ItemSort {
+export function updateItemSort(
+  itemSort: ItemSort,
+  field: keyof TodoItem
+): ItemSort {
   return {
     ...itemSort,
     field,
