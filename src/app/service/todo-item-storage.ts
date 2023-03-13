@@ -10,7 +10,6 @@ export interface TodoItemStorage {
   allItems$: Observable<TodoItem[]>;
 
   loadItems(): void;
-  getAllItems$(): Observable<TodoItem[]>;
   getItem(id: string): Observable<TodoItem>;
   addItem(item: Partial<TodoItem>): void;
   removeItem(id: string): void;

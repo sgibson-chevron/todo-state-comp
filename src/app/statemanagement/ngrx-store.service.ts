@@ -5,11 +5,10 @@ import { ItemSort } from '../model/item-sort';
 import { ItemFilter } from '../model/item-filter.enum';
 import { Store } from '@ngrx/store';
 import {
+  selectFilteredTodos,
   selectFilters,
-  selectFiltersFeature,
   selectTodoFeature,
   selectTodoIds,
-  selectTodos,
 } from './index';
 import { map } from 'rxjs/operators';
 import * as fromTodoItem from './todo-item.reducer';
@@ -24,13 +23,9 @@ import { randomId } from '../model/todo-item-functions';
 export class NgrxStoreService implements TodoItemStorage {
   constructor(private store: Store) {}
 
-  allItems$: Observable<TodoItem[]> = this.store.select(selectTodos);
+  allItems$: Observable<TodoItem[]> = this.store.select(selectFilteredTodos);
   filter$: Observable<ItemFilter> = this.store.select(selectFilters);
   sort$: Observable<ItemSort>;
-
-  getAllItems$(): Observable<TodoItem[]> {
-    return this.store.select(selectTodos);
-  }
 
   addItem(item: Partial<TodoItem>): void {
     this.store

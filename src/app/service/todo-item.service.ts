@@ -28,10 +28,6 @@ export class TodoItemService {
 
   constructor(@Inject(TODO_ITEM_STORAGE) private storage: TodoItemStorage) {}
 
-  getAllItems$(): Observable<TodoItem[]> {
-    return this.storage.getAllItems$();
-  }
-
   loadItems(): void {
     return this.storage.loadItems();
   }

@@ -18,7 +18,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 })
 export class ListComponent implements OnInit {
   addFormGroup: UntypedFormGroup = this.createFormGroup();
-  todoItems$: Observable<TodoItem[]> = this.service.getAllItems$();
+  todoItems$: Observable<TodoItem[]> = this.service.todoItems$;
   hasTodoItems$: Observable<boolean> = this.todoItems$.pipe(
     map((items) => items.length > 0)
   );
@@ -36,8 +36,6 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.service.loadItems();
-    this.service.todoItems$.subscribe(console.log);
-    this.service.getAllItems$().subscribe(console.log);
   }
 
   toggleItemCompleted(id: string): void {

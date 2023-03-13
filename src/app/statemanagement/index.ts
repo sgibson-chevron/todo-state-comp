@@ -7,6 +7,12 @@ import {
 } from '@ngrx/store';
 import * as fromTodoItem from './todo-item.reducer';
 import * as fromFilters from './filters.reducer';
+import { TodoItem } from '../model/todo-item';
+import { ItemFilter } from '../model/item-filter.enum';
+import {
+  filterTodoItemBy,
+  sortAndFilterData,
+} from '../model/todo-item-functions';
 
 export interface State {
   [fromTodoItem.todoItemsFeatureKey]: fromTodoItem.State;
@@ -28,10 +34,6 @@ export const selectTodos = createSelector(selectTodoFeature, (state) =>
   fromTodoItem.selectAll(state)
 );
 
-export const selectTodoIds = createSelector(selectTodoFeature, (state) =>
-  fromTodoItem.selectIds(state)
-);
-
 export const selectFiltersFeature = createFeatureSelector<fromFilters.State>(
   fromFilters.filterFeatureKey
 );
@@ -39,6 +41,18 @@ export const selectFiltersFeature = createFeatureSelector<fromFilters.State>(
 export const selectFilters = createSelector(
   selectFiltersFeature,
   (state) => state.filter
+);
+
+export const selectFilteredSortedTodos = createSelector(
+  selectTodos,
+  selectFilters,
+  (todos: TodoItem[], filter: ItemFilter) => {
+    return todos.filter(sortAndFilterData(todos, filter, sort));
+  }
+);
+
+export const selectTodoIds = createSelector(selectTodoFeature, (state) =>
+  fromTodoItem.selectIds(state)
 );
 
 export const selectTodoItems = (state: State) => state;
