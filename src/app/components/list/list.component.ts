@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ItemSort } from '../../model/item-sort';
@@ -12,7 +16,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
   addFormGroup: UntypedFormGroup = this.createFormGroup();
   todoItems$: Observable<TodoItem[]> = this.service.todoItems$;
   hasTodoItems$: Observable<boolean> = this.todoItems$.pipe(
@@ -25,11 +29,10 @@ export class ListComponent implements OnInit {
     { key: 'createdDateTime', label: 'Created Date & Time' },
   ];
 
-  constructor(private fb: UntypedFormBuilder, private service: TodoItemService) {}
-
-  ngOnInit() {
-    this.service.loadItems();
-  }
+  constructor(
+    private fb: UntypedFormBuilder,
+    private service: TodoItemService
+  ) {}
 
   toggleItemCompleted(id: string): void {
     this.service.toggleItemCompleted(id);
