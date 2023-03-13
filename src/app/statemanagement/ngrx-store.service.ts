@@ -5,14 +5,16 @@ import { ItemSort } from '../model/item-sort';
 import { ItemFilter } from '../model/item-filter.enum';
 import { Store } from '@ngrx/store';
 import {
-  selectFilteredTodos,
+  selectFilteredSortedTodos,
   selectFilters,
+  selectSort,
   selectTodoFeature,
   selectTodoIds,
 } from './index';
 import { map } from 'rxjs/operators';
 import * as fromTodoItem from './todo-item.reducer';
 import * as filterActions from './filters.actions';
+import * as sortActions from './sort.actions';
 import * as todoActions from './todo-item.actions';
 import { Injectable } from '@angular/core';
 import { MOCK_TODO_ITEMS } from '../data/mock-data';
@@ -23,9 +25,11 @@ import { randomId } from '../model/todo-item-functions';
 export class NgrxStoreService implements TodoItemStorage {
   constructor(private store: Store) {}
 
-  allItems$: Observable<TodoItem[]> = this.store.select(selectFilteredTodos);
+  allItems$: Observable<TodoItem[]> = this.store.select(
+    selectFilteredSortedTodos
+  );
   filter$: Observable<ItemFilter> = this.store.select(selectFilters);
-  sort$: Observable<ItemSort>;
+  sort$: Observable<ItemSort> = this.store.select(selectSort);
 
   addItem(item: Partial<TodoItem>): void {
     this.store
@@ -35,7 +39,7 @@ export class NgrxStoreService implements TodoItemStorage {
         this.store.dispatch(
           todoActions.addTodoItem({
             todoItem: {
-              ...createTodoItem(randomId()),
+              ...createTodoItem(randomId(ids.map((id) => id.toString()))),
               name: item.name,
             },
           })
@@ -65,7 +69,9 @@ export class NgrxStoreService implements TodoItemStorage {
     this.store.dispatch(filterActions.setFilter({ filter }));
   }
 
-  setSortField(field: string): void {}
+  setSortField(field: keyof TodoItem): void {
+    this.store.dispatch(sortActions.setSort({ field }));
+  }
 
   toggleItemCompleted(id: string): void {
     this.store.dispatch(
