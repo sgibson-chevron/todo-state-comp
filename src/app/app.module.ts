@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexModule } from '@angular/flex-layout';
+import { TodoItemService } from './service/todo-item.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,15 @@ import { FlexModule } from '@angular/flex-layout';
     AppRoutingModule,
     FlexModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (todoService: TodoItemService) => {
+        todoService.loadItems();
+      },
+      deps: [TodoItemService],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
