@@ -12,6 +12,7 @@ import { TodoItem } from '../model/todo-item';
 import { ItemFilter } from '../model/item-filter.enum';
 import { sortAndFilterData } from '../model/todo-item-functions';
 import { ItemSort } from '../model/item-sort';
+import { selectSortState } from './sort.selectors';
 
 export interface State {
   [fromTodoItem.todoItemsFeatureKey]: fromTodoItem.State;
@@ -31,21 +32,21 @@ export const selectTodoFeature = createFeatureSelector<fromTodoItem.State>(
   fromTodoItem.todoItemsFeatureKey
 );
 
-export const selectTodos = createSelector(selectTodoFeature, (state) =>
+export const selectTodosList = createSelector(selectTodoFeature, (state) =>
   fromTodoItem.selectAll(state)
+);
+
+export const selectTodosMap = createSelector(selectTodoFeature, (state) =>
+  fromTodoItem.selectEntities(state)
 );
 
 export const selectFiltersFeature = createFeatureSelector<fromFilters.State>(
   fromFilters.filterFeatureKey
 );
 
-export const selectSortFeature = createFeatureSelector<fromSort.State>(
-  fromSort.sortFeatureKey
-);
-
 export const selectSort = createSelector(
-  selectSortFeature,
-  (state) => state.sort
+  selectSortState,
+  (state: fromSort.State) => state.sort
 );
 
 export const selectFilters = createSelector(
@@ -54,7 +55,7 @@ export const selectFilters = createSelector(
 );
 
 export const selectFilteredSortedTodos = createSelector(
-  selectTodos,
+  selectTodosList,
   selectFilters,
   selectSort,
   (todos: TodoItem[], filter: ItemFilter, sort: ItemSort) => {

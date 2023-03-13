@@ -34,10 +34,6 @@ export class ListComponent implements OnInit {
     private service: TodoItemService
   ) {}
 
-  ngOnInit() {
-    this.service.loadItems();
-  }
-
   toggleItemCompleted(id: string): void {
     this.service.toggleItemCompleted(id);
   }

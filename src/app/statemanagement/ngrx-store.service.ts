@@ -10,6 +10,7 @@ import {
   selectSort,
   selectTodoFeature,
   selectTodoIds,
+  selectTodosMap,
 } from './index';
 import { map } from 'rxjs/operators';
 import * as fromTodoItem from './todo-item.reducer';
@@ -20,6 +21,7 @@ import { Injectable } from '@angular/core';
 import { MOCK_TODO_ITEMS } from '../data/mock-data';
 import { convertDateToSeconds } from '../model/date-time-seconds';
 import { randomId } from '../model/todo-item-functions';
+import { Dictionary } from '@ngrx/entity';
 
 @Injectable()
 export class NgrxStoreService implements TodoItemStorage {
@@ -49,10 +51,8 @@ export class NgrxStoreService implements TodoItemStorage {
 
   getItem(id: string): Observable<TodoItem> {
     return this.store
-      .select(selectTodoFeature)
-      .pipe(
-        map((el: fromTodoItem.State) => el.todos.find((todo) => todo.id === id))
-      );
+      .select(selectTodosMap)
+      .pipe(map((todos: Dictionary<TodoItem>) => todos[id]));
   }
 
   loadItems(): void {
