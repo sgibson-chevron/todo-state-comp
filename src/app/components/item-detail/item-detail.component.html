@@ -1,5 +1,5 @@
 <ng-container *ngIf="item$ | async as item; else itemNotFound">
-  <mat-card>
+  <mat-card fxLayout="row">
     <mat-card-title fxLayout="row">
       <mat-checkbox
         (change)="onCheckboxClicked(item.id)"
