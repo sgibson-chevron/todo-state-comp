@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexModule } from '@angular/flex-layout';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './statemanagement/app.effects';
 import { StoreModule } from '@ngrx/store';
@@ -18,7 +19,6 @@ import { reducers, metaReducers } from './statemanagement';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TODO_ITEM_STORAGE } from './service/todo-item-storage';
 import { NgrxStoreService } from './statemanagement/ngrx-store.service';
-import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,6 @@ import { FlexModule } from '@angular/flex-layout';
     }),
     RouterModule,
     AppRoutingModule,
-    [],
     FlexModule,
   ],
   providers: [{ provide: TODO_ITEM_STORAGE, useClass: NgrxStoreService }],
