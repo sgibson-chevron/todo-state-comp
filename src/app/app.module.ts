@@ -15,6 +15,8 @@ import { AppEffects } from './statemanagement/app.effects';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './statemanagement';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { TODO_ITEM_STORAGE } from './service/todo-item-storage';
+import { NgrxStoreService } from './statemanagement/ngrx-store.service';
 
 const ngrxDevTools:
   | any[]
@@ -50,7 +52,7 @@ const ngrxDevTools:
     // ngrxDevTools,
     // isDevMode() ? StoreDevtoolsModule.instrument() : [],
   ],
-  providers: [],
+  providers: [{ provide: TODO_ITEM_STORAGE, useClass: NgrxStoreService }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

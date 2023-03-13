@@ -1,6 +1,5 @@
 import { isDevMode } from '@angular/core';
 import {
-  ActionReducer,
   ActionReducerMap,
   createFeatureSelector,
   createSelector,
