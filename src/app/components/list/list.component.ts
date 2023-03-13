@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -16,7 +16,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css'],
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
   addFormGroup: UntypedFormGroup = this.createFormGroup();
   todoItems$: Observable<TodoItem[]> = this.service.todoItems$;
   hasTodoItems$: Observable<boolean> = this.todoItems$.pipe(
